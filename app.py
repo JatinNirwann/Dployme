@@ -11,16 +11,11 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 sys.path.append(str(Path(__file__).parent / 'app'))
 
-from services.cloudflare_tunnel_api import TunnelManager, CloudflareTunnelAPI
-from config.cloudflare_config import CloudflareConfig
+from cloudflare_tunnel_api import TunnelManager, CloudflareTunnelAPI
+from cloudflare_config import CloudflareConfig
+from tunnel_process_manager import TunnelProcessManager
 
-try:
-    from app.services.tunnel_process_manager import TunnelProcessManager
-except ImportError:
-    sys.path.append(str(Path(__file__).parent / 'app' / 'services'))
-    from tunnel_process_manager import TunnelProcessManager
-
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 
 logging.basicConfig(level=logging.INFO)
